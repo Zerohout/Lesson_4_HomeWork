@@ -12,7 +12,7 @@ namespace Task_2
 {
     public class MyArray
     {
-        static string path;
+        static string path = string.Empty;
         static bool cont;
         static bool retryBool;
         static MyArray b = new MyArray(0);
@@ -28,9 +28,7 @@ namespace Task_2
 
             do
             {
-
-                Console.WriteLine(
-                    "Будете ли вы работать с текстовым файлом (загрузка из файла/запись в файл)?\n0) Передумать и вернуться в главное меню\n1) Буду\n2) Продолжить без использования файлов");
+                Console.WriteLine("Будете ли вы работать с текстовым файлом (загрузка из файла/запись в файл)?\n0) Передумать и вернуться в главное меню\n1) Буду\n2) Продолжить без использования файлов");
 
                 try
                 {
@@ -58,80 +56,6 @@ namespace Task_2
                     Console.Clear();
                 }
             } while (true);
-
-
-            #region Схоронение
-            /*
-            
-            var next = false;
-            var multiNum = 0;
-            do
-            {
-                Console.Clear();
-                Console.Write("Ваш массив: ");
-                b.Print();
-                Console.WriteLine($"\n\nКоличество положительных чисел в массиве: {b.CountPositiv}");
-                Console.WriteLine($"\nМинимальное значение в массиве: {b.Min}");
-                Console.WriteLine($"\nМаксимальных чисел: {b.MinCount()}");
-                Console.WriteLine($"\nМаксимальное значение в массиве: {b.Max}");
-                Console.WriteLine($"\nМаксимальных чисел: {b.MaxCount()}");
-                Console.WriteLine($"\nСумма всех элементов массива равна : {b.Sum}");
-                var c = b.CopyTo(b);
-                Console.WriteLine("\nТеперь я сделал ваш массив отрицательным: ");
-                c.Negative();
-                c.Print();
-                Console.Write("\n\nВведите число, на которое будет умножен каждый элемент массива: ");
-                try
-                {
-                    multiNum = int.Parse(Console.ReadLine());
-                    next = true;
-                }
-                catch
-                {
-                    next = false;
-                }
-
-
-                b.Multi(multiNum);
-                Console.WriteLine($"\nВсе эелементы были умножены на {multiNum}, теперь массива стал таким:\n");
-                b.Print();
-                var brEx = false;
-                do
-                {
-                    
-                    Console.WriteLine(
-                        "Введите путь до файла, в который вы хотите сохранить массив. Если не желаете этого делать, введите 'Exit'\nПуть(или Exit):");
-                    var text = Console.ReadLine();
-                    if (text == "Exit")
-                    {
-                        next = true;
-                        break;
-                    }
-                    else
-                    {
-                        try
-                        {
-                            b.WriteMyArray(text);
-                            
-                            next = true;
-                            break;
-                        }
-                        catch
-                        {
-                            brEx = false;
-                        }
-                        
-                        
-                    }
-                    Console.Clear();
-
-                } while (brEx);
-
-            } while (!next);
-            */
-            #endregion
-
-
         }
 
         private static void FileWorking()
@@ -238,13 +162,14 @@ namespace Task_2
         }
 
         private static void ArrWork()
+        // Создание массива
         {
             var arrLength = 0;
             do
             {
                 Console.Clear();
                 Console.WriteLine("\nСоздание массива\n");
-                Console.Write("1) Введите размер массива: ");
+                Console.Write("\n1) Введите размер массива: ");
 
                 try
                 {
@@ -267,7 +192,7 @@ namespace Task_2
 
             do
             {
-                Console.Write("Введите 0 для создания массива с указанным размером (" + arrLength +
+                Console.Write("\nВведите 0 для создания массива с указанным размером (" + arrLength +
                               ").\nОн автоматически заполнится числами от 1 до 100.\nИли введите через пробел начальный элемент массива и \nзначение на которое будет увеличиваться каждое следующее значение: ");
 
                 try
@@ -298,21 +223,30 @@ namespace Task_2
                     Console.Clear();
                 }
             } while (true);
-
-
         }
 
         private static void ArrAction()
+        // Действие над массивом
         {
-            Console.Write("Ваш массив: ");
+            var rand = new Random();
+            Console.Write("\nВаш массив: ");
             b.Print();
             Console.WriteLine($"\n\nКоличество положительных чисел в массиве: {b.CountPositiv}");
             Console.WriteLine($"\nМинимальное значение в массиве: {b.Min}");
-            Console.WriteLine($"\nМаксимальных чисел: {b.MinCount()}");
+            Console.WriteLine($"\nМинимальных чисел: {b.MinCount()}");
             Console.WriteLine($"\nМаксимальное значение в массиве: {b.Max}");
             Console.WriteLine($"\nМаксимальных чисел: {b.MaxCount()}");
             Console.WriteLine($"\nСумма всех элементов массива равна : {b.Sum}");
-
+            Console.WriteLine("\nВаш массив, умноженный на случайное число от 1 до 10:");
+            b.Multi(rand.Next(1, 11));
+            b.Print();
+            Console.WriteLine("\n\nВаш массив, только теперь с отрицательными элементами:");
+            b.Negative();
+            b.Print();
+            if (File.Exists(path))
+            {
+                b.WriteMyArray(path);
+            }
         }
 
         private int[] a;
@@ -326,10 +260,10 @@ namespace Task_2
             Console.WriteLine(s);
             Console.ResetColor();
             cont = false;
-
         }
 
         public MyArray CopyTo(MyArray arr)
+        // Копирование из класса в класс
         {
             for (var i = 0; i < arr.Length; i++)
             {
@@ -345,7 +279,7 @@ namespace Task_2
             do
             {
                 int retryNum;
-                Console.WriteLine("1) Повторить задание.\n2) Возврат к главному меню.");
+                Console.WriteLine("\n\n1) Повторить задание.\n2) Возврат к главному меню.");
                 try
                 {
                     retryNum = Convert.ToInt32(Console.ReadLine());
@@ -376,7 +310,7 @@ namespace Task_2
         }
 
         public MyArray(int[] b)
-        // Пустой конcтруктор
+        
         {
             a = new int[b.Length];
             b.CopyTo(a, 0);
