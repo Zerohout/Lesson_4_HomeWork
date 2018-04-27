@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,8 +12,10 @@ namespace Task_2
 {
     public class MyArray
     {
+        static string path;
         static bool cont;
         static bool retryBool;
+        static MyArray b = new MyArray(0);
         public static void Main()
         {
             Task2();
@@ -22,66 +25,44 @@ namespace Task_2
         public static void Task2()
         {
             cont = false;
-            var b = new MyArray(0);
 
             do
             {
 
-                Console.Write(
-                    "\n\nВведите через ПРОБЕЛ количество переменных в массиве и \n(при желании) начальное значение массива и значение шага, \nна которое увеличатся остальные значения переменных: ");
-                var userVaule = Console.ReadLine();
+                Console.WriteLine(
+                    "Будете ли вы работать с текстовым файлом (загрузка из файла/запись в файл)?\n0) Передумать и вернуться в главное меню\n1) Буду\n2) Продолжить без использования файлов");
+
                 try
                 {
-
-                    var a = Array.ConvertAll(userVaule.Split(' '), int.Parse);
-                    if (a[0] < 1)
+                    var selFileWork = int.Parse(Console.ReadLine());
+                    if (selFileWork == 0)
                     {
-                        errMsg("Размер массива не может быть меньше 1");
-                        continue;
+                        Console.Clear();
+                        break;
                     }
-
-                    if (a.Length == 1)
+                    else if (selFileWork == 1)
                     {
-                        b = new MyArray(a[0]);
+                        FileWorking();
+                        ExitTask();
+                        break;
                     }
-                    else if (a.Length == 3)
+                    else if (selFileWork == 2)
                     {
-                        b = new MyArray(a[0], a[1], a[2]);
+                        ArrWork();
+                        ExitTask();
+                        break;
                     }
-                    else
-                    {
-                        errMsg("Введите 1 или 3 переменные");
-                        continue;
-                    }
-
-                    Console.Clear();
-                    cont = true;
                 }
                 catch
                 {
-                    try
-                    {
-                        if (File.Exists(userVaule))
-                        {
-                            b = new MyArray(userVaule);
-                        }
-                        else
-                        {
-                            errMsg("Файл не найден");
-                            continue;
-                        }
-                    }
-                    catch
-                    {
-                        errMsg("Неизвестная ошибка");
-                        continue;
-                    }
-
                     Console.Clear();
-                    cont = true;
                 }
-            } while (!cont);
+            } while (true);
 
+
+            #region Схоронение
+            /*
+            
             var next = false;
             var multiNum = 0;
             do
@@ -147,12 +128,191 @@ namespace Task_2
                 } while (brEx);
 
             } while (!next);
+            */
+            #endregion
 
 
+        }
+
+        private static void FileWorking()
+        {
+            var exit = false;
+            path = string.Empty;
+            do
+            {
+                Console.Write(
+                    "Введите путь до текстового файла куда будут сохраняться и загружаться данные из массива: ");
+                path = Console.ReadLine();
 
 
+                if (!File.Exists(path))
+                {
+                    try
+                    {
+                        File.Create(path);
+                        Console.Clear();
+                        ArrWork();
+                        break;
+                    }
+                    catch
+                    {
+                        errMsg("Неизвестная ошибка");
+                    }
+                }
+                else
+                {
+                    do
+                    {
+                        Console.WriteLine("Хотите загрузить данные из файла?\n1) Загрузить\n2) Продолжить без загрузки");
+                        try
+                        {
+                            var selLoadN = int.Parse(Console.ReadLine());
+                            if (selLoadN == 1)
+                            {
 
-            ExitTask();
+                                try
+                                {
+                                    Console.Clear();
+                                    b = new MyArray(path);
+                                    ArrAction();
+                                    exit = true;
+                                    break;
+                                }
+                                catch
+                                {
+                                    bool nextRF = false;
+                                    do
+                                    {
+                                        errMsg("Массив имеет некоректные данные.");
+                                        Console.WriteLine("\nОчистить файл для записи по-новой?\n1) Очистить \n2) Начать заново\n");
+
+                                        try
+                                        {
+                                            var choiseRF = int.Parse(Console.ReadLine());
+                                            if (choiseRF == 1)
+                                            {
+                                                File.Create(path);
+                                                nextRF = true;
+                                                exit = true;
+                                                Console.Clear();
+                                                ArrWork();
+                                            }
+                                            else if (choiseRF == 2)
+                                            {
+                                                Console.Clear();
+                                                Task2();
+                                                nextRF = true;
+                                                exit = true;
+                                            }
+                                        }
+                                        catch
+                                        {
+                                            nextRF = false;
+                                        }
+                                    } while (!nextRF);
+                                }
+                                Console.Clear();
+                                break;
+                            }
+                            else if (selLoadN == 2)
+                            {
+                                Console.Clear();
+                                ArrWork();
+                                exit = true;
+                                break;
+                            }
+                            else
+                            {
+                                Console.Clear();
+                            }
+                        }
+                        catch
+                        {
+                            errMsg("Ошибка, попробуйте еще раз.");
+                        }
+                    } while (true);
+                }
+
+
+            } while (!exit);
+        }
+
+        private static void ArrWork()
+        {
+            var arrLength = 0;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("\nСоздание массива\n");
+                Console.Write("1) Введите размер массива: ");
+
+                try
+                {
+                    arrLength = int.Parse(Console.ReadLine());
+                    if (arrLength > 0)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Размер не может быть меньше 1.");
+                    }
+                }
+                catch
+                {
+                    Console.Clear();
+                }
+            } while (true);
+
+            do
+            {
+                Console.Write("Введите 0 для создания массива с указанным размером (" + arrLength +
+                              ").\nОн автоматически заполнится числами от 1 до 100.\nИли введите через пробел начальный элемент массива и \nзначение на которое будет увеличиваться каждое следующее значение: ");
+
+                try
+                {
+                    var arrVal = Array.ConvertAll(Console.ReadLine().Split(' '), int.Parse);
+                    if (arrVal.Length == 1 && arrVal[0] == 0)
+                    {
+                        Console.Clear();
+                        b = new MyArray(arrLength);
+                        ArrAction();
+                        break;
+                    }
+                    else if (arrVal.Length == 2)
+                    {
+                        Console.Clear();
+                        b = new MyArray(arrLength, arrVal[0], arrVal[1]);
+                        ArrAction();
+                        break;
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        errMsg("Что-то введено неверно.");
+                    }
+                }
+                catch
+                {
+                    Console.Clear();
+                }
+            } while (true);
+
+
+        }
+
+        private static void ArrAction()
+        {
+            Console.Write("Ваш массив: ");
+            b.Print();
+            Console.WriteLine($"\n\nКоличество положительных чисел в массиве: {b.CountPositiv}");
+            Console.WriteLine($"\nМинимальное значение в массиве: {b.Min}");
+            Console.WriteLine($"\nМаксимальных чисел: {b.MinCount()}");
+            Console.WriteLine($"\nМаксимальное значение в массиве: {b.Max}");
+            Console.WriteLine($"\nМаксимальных чисел: {b.MaxCount()}");
+            Console.WriteLine($"\nСумма всех элементов массива равна : {b.Sum}");
+
         }
 
         private int[] a;
