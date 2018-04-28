@@ -11,13 +11,12 @@ namespace Task_4
     {
         static bool retryBool;
         static string path = string.Empty;
+        static int selFileWork = 0;
 
         public static void Main()
         {
             Task4();
-            //FileWorking();
-            //CreateMultiArray();
-
+            ExitTask();
         }
 
         public static void Task4()
@@ -28,7 +27,7 @@ namespace Task_4
 
                 try
                 {
-                    var selFileWork = int.Parse(Console.ReadLine());
+                    selFileWork = int.Parse(Console.ReadLine());
                     if (selFileWork == 0)
                     {
                         Console.Clear();
@@ -37,15 +36,14 @@ namespace Task_4
                     else if (selFileWork == 1)
                     {
                         FileWorking();
-                        ExitTask();
                         break;
                     }
                     else if (selFileWork == 2)
                     {
                         CreateMultiArray();
-                        ExitTask();
                         break;
                     }
+
                 }
                 catch
                 {
@@ -74,6 +72,7 @@ namespace Task_4
         }
 
         public static void MultiArrAction(MyMultiArray arr)
+        // Работа с массивом
         {
 
             Console.WriteLine("\n\nВаш двумерный массив:");
@@ -87,6 +86,10 @@ namespace Task_4
             var indexMin = new int[2];
             arr.OutMultiMinIndex(out indexMin);
             Console.WriteLine($"Минимальное число в массиве - {arr.MultiMin} и его индекс равен [{indexMin[0]},{indexMin[1]}]");
+            if (File.Exists(path) && selFileWork == 1)
+            {
+                arr.WriteMyMultiArray(path);
+            }
 
         }
 
@@ -98,7 +101,7 @@ namespace Task_4
             {
                 for (var j = 0; j < a.GetLength(1); j++)
                 {
-                    sum += a[i,j];
+                    sum += a[i, j];
                 }
             }
 
@@ -106,26 +109,28 @@ namespace Task_4
         }
 
         public int[] SumMoreThan()
+        // Сложение чисел в массиве больше случайного, взятого из массива
         {
             var rand = new Random();
             var ret = new int[2];
-           ret[0] = a[rand.Next(0, a.GetLength(0)), rand.Next(0, a.GetLength(1))];
+            ret[0] = a[rand.Next(0, a.GetLength(0)), rand.Next(0, a.GetLength(1))];
 
             for (var i = 0; i < a.GetLength(0); i++)
             {
                 for (var j = 0; j < a.GetLength(1); j++)
                 {
-                    if (a[i,j] > ret[0])
+                    if (a[i, j] > ret[0])
                     {
-                        ret[1] += a[i,j];
+                        ret[1] += a[i, j];
                     }
                 }
             }
 
             return ret;
-}
+        }
 
         public int MultiMin
+        // минимальное число в массиве
         {
             get
             {
@@ -134,9 +139,9 @@ namespace Task_4
                 {
                     for (int j = 0; j < a.GetLength(1); j++)
                     {
-                        if (min > a[i,j])
+                        if (min > a[i, j])
                         {
-                            min = a[i,j];
+                            min = a[i, j];
                         }
                     }
                 }
@@ -145,7 +150,7 @@ namespace Task_4
             }
         }
 
-       
+
         public void OutMultiMaxIndex(out int[] maxIndex)
         // Индекс максимального числа в массиве
         {
@@ -155,9 +160,9 @@ namespace Task_4
             {
                 for (var j = 0; j < a.GetLength(1); j++)
                 {
-                    if (max < a[i,j])
+                    if (max < a[i, j])
                     {
-                        max = a[i,j];
+                        max = a[i, j];
                         temp[0] = i;
                         temp[1] = j;
                     }
@@ -176,9 +181,9 @@ namespace Task_4
             {
                 for (var j = 0; j < a.GetLength(1); j++)
                 {
-                    if (min > a[i,j])
+                    if (min > a[i, j])
                     {
-                        min = a[i,j];
+                        min = a[i, j];
                         temp[0] = i;
                         temp[1] = j;
                     }
@@ -189,6 +194,7 @@ namespace Task_4
         }
 
         public int MultiMax
+        // максимальное число в массиве
         {
             get
             {
@@ -197,9 +203,9 @@ namespace Task_4
                 {
                     for (int j = 0; j < a.GetLength(1); j++)
                     {
-                        if (max < a[i,j])
+                        if (max < a[i, j])
                         {
-                            max = a[i,j];
+                            max = a[i, j];
                         }
                     }
                 }
@@ -236,7 +242,7 @@ namespace Task_4
             a = new int[ss.Length, ss[0].Split(' ').Length];
             for (var i = 0; i < a.GetLength(0); i++)
             {
-                for (var j = 0; j < a.GetLength(1); i++)
+                for (var j = 0; j < a.GetLength(1); j++)
                     a[i, j] = int.Parse(ss[i].Split(' ')[j]);
             }
         }
