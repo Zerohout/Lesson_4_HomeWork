@@ -39,11 +39,7 @@ namespace Task_5
                     Main();
                     break;
             }
-
-
-
         }
-
 
         private int Current => current;
 
