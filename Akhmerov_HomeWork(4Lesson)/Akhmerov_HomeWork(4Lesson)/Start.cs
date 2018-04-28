@@ -8,6 +8,7 @@ namespace Akhmerov_HomeWork_4Lesson
 {
     using Task_1;
     using Task_2;
+    using Task_4;
     class Start
     {
         static bool exit;
@@ -27,10 +28,10 @@ namespace Akhmerov_HomeWork_4Lesson
                         MyArray.Main();
                         break;
                     case 3:
-
+                        
                         break;
                     case 4:
-
+                        MyMultiArray.Main();
                         break;
                     case 5:
 

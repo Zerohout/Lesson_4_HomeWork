@@ -24,8 +24,6 @@ namespace Task_2
 
         public static void Task2()
         {
-            cont = false;
-
             do
             {
                 Console.WriteLine("Будете ли вы работать с текстовым файлом (загрузка из файла/запись в файл)?\n0) Передумать и вернуться в главное меню\n1) Буду\n2) Продолжить без использования файлов");
@@ -59,6 +57,7 @@ namespace Task_2
         }
 
         private static void FileWorking()
+        // Работа с файлом
         {
             var exit = false;
             path = string.Empty;
@@ -259,7 +258,7 @@ namespace Task_2
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(s);
             Console.ResetColor();
-            cont = false;
+
         }
 
         public MyArray CopyTo(MyArray arr)
@@ -310,7 +309,7 @@ namespace Task_2
         }
 
         public MyArray(int[] b)
-        
+        // Конструктор с копированием
         {
             a = new int[b.Length];
             b.CopyTo(a, 0);
@@ -340,6 +339,7 @@ namespace Task_2
         }
 
         public void WriteMyArray(string s)
+        // запись массива в файл
         {
             var strArr = new string[a.Length];
 
@@ -363,6 +363,7 @@ namespace Task_2
         }
 
         public int MaxCount()
+        // Количество максимальных значений
         {
             var max = a.Max();
             var count = 0;
@@ -378,6 +379,7 @@ namespace Task_2
         }
 
         public int MinCount()
+        // Количество минимальных значений
         {
             var min = a.Min();
             var count = 0;
