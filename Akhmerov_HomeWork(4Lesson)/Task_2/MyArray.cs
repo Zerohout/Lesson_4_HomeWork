@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Net;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Task_2
+﻿namespace Task_2
 {
+    using System;
+    using System.IO;
+    using System.Linq;
+
     public class MyArray
     {
         static string path = string.Empty;

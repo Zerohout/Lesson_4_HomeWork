@@ -28,17 +28,11 @@ namespace Akhmerov_HomeWork_4Lesson
                     case 2:
                         MyArray.Main();
                         break;
-                    case 3:
-                        
-                        break;
                     case 4:
                         MyMultiArray.Main();
                         break;
                     case 5:
                         Doubler.Main();
-                        break;
-                    case 6:
-
                         break;
                 }
             }
@@ -52,7 +46,7 @@ namespace Akhmerov_HomeWork_4Lesson
             do
             {
                 Console.WriteLine(
-                    "\n\n\n0) Выход из программы\n\n1) Задание №1 (поиск пар)\n\n2) Задание №2 (Мой одномерный массив)\n\n3) Задание №3\n\n4) Задание №4\n\n5) Задание №5\n\n6) Задание №6\n");
+                    "\n\n\n0) Выход из программы\n\n1) Задание №1 (поиск пар)\n\n2) Задание №2 (Мой одномерный массив)\n\n4) Задание №4 (Мой двумерный массив)\n\n5) Задание №5 (Игра Удвоитель)\n\n");
                 try
                 {
                     selTask = Convert.ToInt32(Console.ReadLine());
@@ -69,8 +63,6 @@ namespace Akhmerov_HomeWork_4Lesson
 
         static void ExitProg()
         {
-
-
             Console.SetCursorPosition(Console.WindowWidth / 2 - 14, Console.WindowHeight / 2);
             Console.Write("Для Вас старался ");
             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -113,6 +105,6 @@ namespace Akhmerov_HomeWork_4Lesson
             Console.ForegroundColor = colors[rnd.Next(0, colors.Length)];
             Console.BackgroundColor = colors[rnd.Next(0, colors.Length)];
         }
-        
+
     }
 }
