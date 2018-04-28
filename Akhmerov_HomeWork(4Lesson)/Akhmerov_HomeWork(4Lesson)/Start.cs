@@ -9,6 +9,7 @@ namespace Akhmerov_HomeWork_4Lesson
     using Task_1;
     using Task_2;
     using Task_4;
+    using Task_5;
     class Start
     {
         static bool exit;
@@ -34,7 +35,7 @@ namespace Akhmerov_HomeWork_4Lesson
                         MyMultiArray.Main();
                         break;
                     case 5:
-
+                        Doubler.Main();
                         break;
                     case 6:
 
