@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Task_4
+﻿namespace Task_4
 {
+    using System;
+    using System.IO;
+
     public class MyMultiArray
     {
         static bool retryBool;
