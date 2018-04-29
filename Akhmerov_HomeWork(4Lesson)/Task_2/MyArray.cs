@@ -1,4 +1,5 @@
-﻿using System.Net.Mime;
+﻿using System.IO.Ports;
+using System.Net.Mime;
 using System.Runtime.CompilerServices;
 
 namespace Task_2
@@ -7,12 +8,14 @@ namespace Task_2
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using Sepo;
 
     public class MyArray
     {
         static string path = string.Empty;
         static bool cont;
         static bool retryBool;
+        private static int selFileWork;
         static MyArray b = new MyArray(0);
         public static void Main()
         {
@@ -22,66 +25,66 @@ namespace Task_2
 
         public static void Task2()
         {
-            do
+            SepoHelper sh = new SepoHelper();
+            if (!SepoHelper.unregistered)
             {
-                Console.WriteLine("Будете ли вы работать с текстовым файлом (загрузка из файла/запись в файл)?\n0) Передумать и вернуться в главное меню\n1) Буду\n2) Продолжить без использования файлов");
-
-                try
+                while (sh.retryTask)
                 {
-                    var selFileWork = int.Parse(Console.ReadLine());
-                    if (selFileWork == 0)
+                    Console.WriteLine("\n\nБудете ли вы работать с текстовым файлом (загрузка из файла/запись в файл)?\n\n" +
+                                      "0) Передумать и вернуться в главное меню\n\n" +
+                                      "1) Буду\n\n" +
+                                      "2) Продолжить без использования файлов");
+
+                    try
+                    {
+                        selFileWork = int.Parse(Console.ReadLine());
+                        if (selFileWork == 0)
+                        {
+                            Console.Clear();
+                        }
+                        else if (selFileWork == 1)
+                        {
+                            FileWorking();
+                            //ExitTask();
+                        }
+                        else if (selFileWork == 2)
+                        {
+                            ArrWork();
+                            //ExitTask();
+                        }
+                        sh.ExitTask();
+                    }
+                    catch
                     {
                         Console.Clear();
-                        break;
-                    }
-                    else if (selFileWork == 1)
-                    {
-                        FileWorking();
-                        ExitTask();
-                        break;
-                    }
-                    else if (selFileWork == 2)
-                    {
-                        ArrWork();
-                        ExitTask();
-                        break;
                     }
                 }
-                catch
+            }
+            else
+            {
+                while (sh.retryTask)
                 {
-                    Console.Clear();
+                    ArrWork();
+                    sh.ExitTask();
                 }
-            } while (true);
+            }
         }
 
         private static void FileWorking()
         // Работа с файлом
         {
             var exit = false;
+            path = SepoHelper.accountPath;
 
-            
-            var loc = Directory.GetCurrentDirectory();
-            
-            
-
-           string dirpath = loc + @"\Accounts";
-            path = dirpath + @"\MyArray.txt";
-            
             do
             {
-                if (!Directory.Exists(dirpath))
-                {
-                    Directory.CreateDirectory(dirpath);
-                }
-
-
-                if (!File.Exists(path))
+                if (!File.Exists($"{path}\\MyArray.txt"))
                 {
                     try
                     {
-                        var fs = File.Create(path);
+                        var fs = File.Create($"{path}\\MyArray.txt");
                         fs.Close();
-                        
+
                         Console.Clear();
                         ArrWork();
                         break;
@@ -95,7 +98,7 @@ namespace Task_2
                 {
                     try
                     {
-                        b = new MyArray(path);
+                        b = new MyArray($"{path}\\MyArray.txt");
                         if (b.Length > 0)
                         {
                             do
@@ -111,7 +114,7 @@ namespace Task_2
                                         try
                                         {
                                             Console.Clear();
-                                            b = new MyArray(path);
+                                            b = new MyArray($"{path}\\MyArray.txt");
                                             ArrAction();
                                             exit = true;
                                             break;
@@ -130,7 +133,7 @@ namespace Task_2
                                                     var choiseRF = int.Parse(Console.ReadLine());
                                                     if (choiseRF == 1)
                                                     {
-                                                        var fs = File.Create(path);
+                                                        var fs = File.Create($"{path}\\MyArray.txt");
                                                         fs.Close();
                                                         nextRF = true;
                                                         exit = true;
@@ -274,9 +277,10 @@ namespace Task_2
             Console.WriteLine("\n\nВаш массив, только теперь с отрицательными элементами:");
             b.Negative();
             b.Print();
-            if (File.Exists(path))
+
+            if (File.Exists($"{path}\\MyArray.txt") && selFileWork == 1)
             {
-                b.WriteMyArray(path);
+                b.WriteMyArray($"{path}\\MyArray.txt");
             }
         }
 

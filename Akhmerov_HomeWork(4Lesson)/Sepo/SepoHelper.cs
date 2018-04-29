@@ -11,10 +11,11 @@ namespace Sepo
 {
     public class SepoHelper
     {
-        public static string accsPath = Directory.GetCurrentDirectory() + "/Accounts";
+        public static string accsPath = Directory.GetCurrentDirectory() + @"\Accounts\";
         public static string accountPath = "";
         public static bool exit = false;
-
+        public static bool access = false;
+        public static bool unregistered = false;
         public bool retryTask = true;
 
         static void Main()
@@ -55,9 +56,6 @@ namespace Sepo
                         break;
                 }
             }
-
-
-            retryBool = false;
         }
     }
 }

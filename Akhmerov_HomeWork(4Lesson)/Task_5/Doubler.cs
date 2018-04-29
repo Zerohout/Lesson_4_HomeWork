@@ -36,7 +36,9 @@
             while (sh.retryTask)
             {
                 var sel = 0;
-                Console.WriteLine("\n\n1)Начать игру\n2)Правила\n3)Выход");
+                Console.WriteLine("\n\n1)Начать игру\n\n" +
+                                  "2)Правила\n\n" +
+                                  "3)Выход");
                 try
                 {
                     sel = int.Parse(Console.ReadLine());
