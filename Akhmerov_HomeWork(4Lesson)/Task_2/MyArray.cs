@@ -1,8 +1,12 @@
-﻿namespace Task_2
+﻿using System.Net.Mime;
+using System.Runtime.CompilerServices;
+
+namespace Task_2
 {
     using System;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
 
     public class MyArray
     {
@@ -54,19 +58,30 @@
         // Работа с файлом
         {
             var exit = false;
-            path = string.Empty;
+
+            
+            var loc = Directory.GetCurrentDirectory();
+            
+            
+
+           string dirpath = loc + @"\Accounts";
+            path = dirpath + @"\MyArray.txt";
+            
             do
             {
-                Console.Write(
-                    "Введите путь до текстового файла куда будут сохраняться и загружаться данные из массива: ");
-                path = Console.ReadLine();
+                if (!Directory.Exists(dirpath))
+                {
+                    Directory.CreateDirectory(dirpath);
+                }
 
 
                 if (!File.Exists(path))
                 {
                     try
                     {
-                        File.Create(path);
+                        var fs = File.Create(path);
+                        fs.Close();
+                        
                         Console.Clear();
                         ArrWork();
                         break;
@@ -78,76 +93,99 @@
                 }
                 else
                 {
-                    do
+                    try
                     {
-                        Console.WriteLine("Хотите загрузить данные из файла?\n1) Загрузить\n2) Продолжить без загрузки");
-                        try
+                        b = new MyArray(path);
+                        if (b.Length > 0)
                         {
-                            var selLoadN = int.Parse(Console.ReadLine());
-                            if (selLoadN == 1)
+                            do
                             {
-
+                                Console.WriteLine(
+                                    "Хотите загрузить данные из файла?\n1) Загрузить\n2) Продолжить без загрузки");
                                 try
                                 {
-                                    Console.Clear();
-                                    b = new MyArray(path);
-                                    ArrAction();
-                                    exit = true;
-                                    break;
-                                }
-                                catch
-                                {
-                                    bool nextRF = false;
-                                    do
+                                    var selLoadN = int.Parse(Console.ReadLine());
+                                    if (selLoadN == 1)
                                     {
-                                        errMsg("Массив имеет некоректные данные.");
-                                        Console.WriteLine("\nОчистить файл для записи по-новой?\n1) Очистить \n2) Начать заново\n");
 
                                         try
                                         {
-                                            var choiseRF = int.Parse(Console.ReadLine());
-                                            if (choiseRF == 1)
-                                            {
-                                                File.Create(path);
-                                                nextRF = true;
-                                                exit = true;
-                                                Console.Clear();
-                                                ArrWork();
-                                            }
-                                            else if (choiseRF == 2)
-                                            {
-                                                Console.Clear();
-                                                Task2();
-                                                nextRF = true;
-                                                exit = true;
-                                            }
+                                            Console.Clear();
+                                            b = new MyArray(path);
+                                            ArrAction();
+                                            exit = true;
+                                            break;
                                         }
                                         catch
                                         {
-                                            nextRF = false;
+                                            bool nextRF = false;
+                                            do
+                                            {
+                                                errMsg("Массив имеет некоректные данные.");
+                                                Console.WriteLine(
+                                                    "\nОчистить файл для записи по-новой?\n1) Очистить \n2) Начать заново\n");
+
+                                                try
+                                                {
+                                                    var choiseRF = int.Parse(Console.ReadLine());
+                                                    if (choiseRF == 1)
+                                                    {
+                                                        var fs = File.Create(path);
+                                                        fs.Close();
+                                                        nextRF = true;
+                                                        exit = true;
+                                                        Console.Clear();
+                                                        ArrWork();
+                                                    }
+                                                    else if (choiseRF == 2)
+                                                    {
+                                                        Console.Clear();
+                                                        Task2();
+                                                        nextRF = true;
+                                                        exit = true;
+                                                    }
+                                                }
+                                                catch
+                                                {
+                                                    nextRF = false;
+                                                }
+                                            } while (!nextRF);
                                         }
-                                    } while (!nextRF);
+
+                                        Console.Clear();
+                                        break;
+                                    }
+                                    else if (selLoadN == 2)
+                                    {
+                                        Console.Clear();
+                                        ArrWork();
+                                        exit = true;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        Console.Clear();
+                                    }
                                 }
-                                Console.Clear();
-                                break;
-                            }
-                            else if (selLoadN == 2)
-                            {
-                                Console.Clear();
-                                ArrWork();
-                                exit = true;
-                                break;
-                            }
-                            else
-                            {
-                                Console.Clear();
-                            }
+                                catch
+                                {
+                                    errMsg("Ошибка, попробуйте еще раз.");
+                                    break;
+                                }
+                            } while (true);
                         }
-                        catch
+                        else
                         {
-                            errMsg("Ошибка, попробуйте еще раз.");
+                            Console.Clear();
+                            ArrWork();
+                            exit = true;
+                            break;
                         }
-                    } while (true);
+                    }
+                    catch
+                    {
+                        errMsg("Ошибка, попробуйте еще раз.");
+                    }
                 }
 
 
@@ -346,7 +384,8 @@
             {
                 if (!File.Exists(s))
                 {
-                    File.Create(s);
+                    var fs = File.Create(s);
+                    fs.Close();
                 }
                 File.WriteAllLines(s, strArr);
             }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Sepo;
 
 namespace Akhmerov_HomeWork_4Lesson
 {
@@ -12,15 +13,15 @@ namespace Akhmerov_HomeWork_4Lesson
     using Task_5;
     class Start
     {
-        static bool exit;
+        //static bool exit;
         static void Main()
         {
-            while (!exit)
+            while (!SepoHelper.exit)
             {
                 switch (SelectTask())
                 {
                     case 0:
-                        exit = true;
+                        SepoHelper.exit = true;
                         break;
                     case 1:
                         Task_1.Main();
@@ -36,7 +37,7 @@ namespace Akhmerov_HomeWork_4Lesson
                         break;
                 }
             }
-            ExitProg();
+            //ExitProg();
         }
 
         static int SelectTask()

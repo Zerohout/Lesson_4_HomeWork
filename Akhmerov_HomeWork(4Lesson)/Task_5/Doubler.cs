@@ -1,6 +1,7 @@
 ﻿namespace Task_5
 {
     using System;
+    using Sepo;
 
     public class Doubler
     {
@@ -9,32 +10,18 @@
         private int undo;
         private int undoSel;
         private int tryCount;
-        private int tempCurrent;
+        private int undoTryCount;
+        private int[] undoNums;
+
+
         private static bool retryBool;
         private bool exit = false;
+        SepoHelper sh = new SepoHelper();
+
         public static void Main()
         {
-            var doubler = new Doubler();
-            switch (Menu())
-            {
-                case 1:
-                    Console.Clear();
-                    doubler.Game();
-                    break;
-                case 2:
-                    Console.Clear();
-                    doubler.Rules();
-                    Console.Clear();
-                    Main();
-                    break;
-                case 3:
-                    Console.Clear();
-                    break;
-                default:
-                    Console.Clear();
-                    Main();
-                    break;
-            }
+            var startD = new Doubler();
+            startD.Menu();
         }
 
         private int Current => current;
@@ -43,18 +30,44 @@
 
         private int Undo => undo;
 
-        static int Menu()
+        void Menu()
         {
 
-            Console.WriteLine("\n\n1)Начать игру\n2)Правила\n3)Выход");
-            try
+            while (sh.retryTask)
             {
-                return int.Parse(Console.ReadLine());
-            }
-            catch
-            {
-                Console.Clear();
-                return 0;
+                var sel = 0;
+                Console.WriteLine("\n\n1)Начать игру\n2)Правила\n3)Выход");
+                try
+                {
+                    sel = int.Parse(Console.ReadLine());
+                }
+                catch
+                {
+                    Console.Clear();
+                    continue;
+                }
+                finally
+                {
+
+                    Console.Clear();
+                    switch (sel)
+                    {
+                        case 1:
+                            while (sh.retryTask)
+                            {
+                                Game();
+                            }
+                            break;
+                        case 2:
+                            Rules();
+                            Console.Clear();
+                            Main();
+                            break;
+                        case 3:
+                            sh.retryTask = false;
+                            break;
+                    }
+                }
             }
         }
 
@@ -65,24 +78,32 @@
             undo = 5;
             current = 1;
             tryCount = 0;
+            undoTryCount = 0;
+            undoNums = new int[30];
         }
 
         void Game()
         {
-            Console.SetCursorPosition(Console.WindowWidth / 2 - 16, 3);
-            Console.Write("Вас приветствует игра ");
-            ColorText(ConsoleColor.Cyan, "Удвоитель");
-            Help();
+            var doubler = new Doubler();
 
-            while (current != finish || current < finish)
+            while (true)
             {
-                UserValue();
-            }
+                Console.SetCursorPosition(Console.WindowWidth / 2 - 16, 3);
+                Console.Write("Вас приветствует игра ");
+                ColorText(ConsoleColor.Cyan, "Удвоитель");
+                doubler.Help();
 
-            if (!exit)
-            {
-                GameOver();
-                ExitTask();
+                if (doubler.current != doubler.finish && doubler.current < doubler.finish)
+                {
+                    doubler.UserValue();
+                    Console.Clear();
+                }
+                else
+                {
+                    doubler.GameOver();
+                    sh.ExitTask();
+                    break;
+                }
             }
         }
 
@@ -123,57 +144,54 @@
 
         void UserValue()
         {
-            if (!exit)
+            var exitUV = false;
+            while (!exitUV)
             {
                 switch (Console.ReadLine())
                 {
                     case "plus":
+                        if (undo > 0)
+                        {
+                            undoNums[tryCount] = current;
+                        }
                         current++;
                         undoSel = 1;
                         tryCount++;
-                        Console.Clear();
-                        Game();
+                        undoTryCount++;
+                        exitUV = true;
                         break;
                     case "multi":
+                        if (undo > 0)
+                        {
+                            undoNums[tryCount] = current;
+                        }
                         current *= 2;
                         undoSel = 2;
                         tryCount++;
-                        Console.Clear();
-                        Game();
+                        undoTryCount++;
+                        exitUV = true;
                         break;
                     case "reset":
-                        tempCurrent = current;
+                        if (undo > 0)
+                        {
+                            undoNums[tryCount] = current;
+                        }
                         current = 1;
                         undoSel = 3;
                         tryCount++;
-                        Console.Clear();
-                        Game();
+                        undoTryCount++;
+                        exitUV = true;
                         break;
                     case "undo":
                         if (undo > 0)
                         {
-                            if (undoSel == 1)
-                            {
-                                current--;
-                            }
-                            else if (undoSel == 2)
-                            {
-                                current /= 2;
-                            }
-                            else if (undoSel == 3)
-                            {
-                                current = tempCurrent;
-                            }
-
+                            undoTryCount--;
+                            current = undoNums[undoTryCount];
+                            
                             undo--;
                             tryCount++;
                         }
-                        Console.Clear();
-                        Game();
-                        break;
-                    default:
-                        Console.Clear();
-                        Game();
+                        exitUV = true;
                         break;
                 }
             }
@@ -220,43 +238,5 @@
             Console.WriteLine("Можно отменить ход 5 раз за игру.");
             Console.ReadLine();
         }
-
-        private void ExitTask()
-        // Запрос при выходе
-        {
-            do
-            {
-                int retryNum;
-                Console.WriteLine("\n\n1) Повторить задание.\n2) Возврат к главному меню.");
-                try
-                {
-                    retryNum = Convert.ToInt32(Console.ReadLine());
-                }
-                catch
-                {
-                    retryNum = 0;
-                }
-
-                switch (retryNum)
-                {
-                    case 1:
-                        Console.Clear();
-                        Main();
-                        break;
-                    case 2:
-                        Console.Clear();
-                        retryBool = false;
-                        exit = true;
-                        break;
-                    default:
-                        Console.Clear();
-                        retryBool = true;
-                        break;
-                }
-            } while (retryBool);
-
-            retryBool = false;
-        }
     }
-
 }
