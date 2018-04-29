@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{01F84C10-D369-4AFF-9588-E36B4E3FA091}</ProjectGuid>
+    <ProjectGuid>{8A7EADA9-1ACF-47E4-87C4-0D887288A283}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Akhmerov_HomeWork_4Lesson</RootNamespace>
-    <AssemblyName>Akhmerov_HomeWork%284Lesson%29</AssemblyName>
+    <RootNamespace>Task_6</RootNamespace>
+    <AssemblyName>Task_6</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -31,9 +31,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -45,41 +42,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Start.cs" />
+    <Compile Include="TrueOrNotTrue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="app.manifest" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Sepo\Sepo.csproj">
       <Project>{3d012162-4149-4e73-8510-63fdb35771d6}</Project>
       <Name>Sepo</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Task3\Task3.csproj">
-      <Project>{1faaae20-a5a2-469e-b0f9-841e1fd87653}</Project>
-      <Name>Task3</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Task_1\Task_1.csproj">
-      <Project>{2d60df4b-1a96-429e-bf2c-6f4b85b1e963}</Project>
-      <Name>Task_1</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Task_2\Task_2.csproj">
-      <Project>{6f22140e-26b8-4146-aac9-9d47e7e58fe4}</Project>
-      <Name>Task_2</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Task_4\Task_4.csproj">
-      <Project>{8de6b208-d43a-4ec8-a969-ea424c385375}</Project>
-      <Name>Task_4</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Task_5\Task_5.csproj">
-      <Project>{8eb802f2-b813-469b-b69d-24aa2ba2d128}</Project>
-      <Name>Task_5</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Task_6\Task_6.csproj">
-      <Project>{8a7eada9-1acf-47e4-87c4-0d887288a283}</Project>
-      <Name>Task_6</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
