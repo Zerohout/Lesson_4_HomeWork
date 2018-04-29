@@ -3,30 +3,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Sepo;
 
 namespace Akhmerov_HomeWork_4Lesson
 {
     using Task_1;
     using Task_2;
+    using Task3;
     using Task_4;
     using Task_5;
     class Start
     {
-        static bool exit;
+        //static bool exit;
         static void Main()
         {
-            while (!exit)
+            AccountManager.Main();
+            while (!SepoHelper.exit)
             {
+                Console.Clear();
                 switch (SelectTask())
                 {
                     case 0:
-                        exit = true;
+                        SepoHelper.exit = true;
                         break;
                     case 1:
                         Task_1.Main();
                         break;
                     case 2:
                         MyArray.Main();
+                        break;
+                    case 3:
+                        AccountManager.Main();
                         break;
                     case 4:
                         MyMultiArray.Main();
@@ -36,7 +43,7 @@ namespace Akhmerov_HomeWork_4Lesson
                         break;
                 }
             }
-            ExitProg();
+            //ExitProg();
         }
 
         static int SelectTask()
@@ -46,7 +53,12 @@ namespace Akhmerov_HomeWork_4Lesson
             do
             {
                 Console.WriteLine(
-                    "\n\n\n0) Выход из программы\n\n1) Задание №1 (поиск пар)\n\n2) Задание №2 (Мой одномерный массив)\n\n4) Задание №4 (Мой двумерный массив)\n\n5) Задание №5 (Игра Удвоитель)\n\n");
+                    "\n\n\n0) Выход из программы\n\n" +
+                    "1) Задание №1 (поиск пар)\n\n" +
+                    "2) Задание №2 (Мой одномерный массив)\n\n" +
+                    "3) Менеджер аккаунтов\n\n" +
+                    "4) Задание №4 (Мой двумерный массив)\n\n" +
+                    "5) Задание №5 (Игра Удвоитель)");
                 try
                 {
                     selTask = Convert.ToInt32(Console.ReadLine());

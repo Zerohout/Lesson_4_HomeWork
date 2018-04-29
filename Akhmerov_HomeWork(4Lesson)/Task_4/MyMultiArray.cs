@@ -2,6 +2,7 @@
 {
     using System;
     using System.IO;
+    using Sepo;
 
     public class MyMultiArray
     {
@@ -12,40 +13,51 @@
         public static void Main()
         {
             Task4();
-            ExitTask();
         }
 
         public static void Task4()
         {
-            do
+            var sh = new SepoHelper();
+            if (!SepoHelper.unregistered)
             {
-                Console.WriteLine("Будете ли вы работать с текстовым файлом (загрузка из файла/запись в файл)?\n0) Передумать и вернуться в главное меню\n1) Буду\n2) Продолжить без использования файлов");
-
-                try
+                while (sh.retryTask)
                 {
-                    selFileWork = int.Parse(Console.ReadLine());
-                    if (selFileWork == 0)
+                    Console.WriteLine("\n\nБудете ли вы работать с текстовым файлом (загрузка из файла/запись в файл)?\n\n" +
+                                      "0) Передумать и вернуться в главное меню\n\n" +
+                                      "1) Буду\n\n" +
+                                      "2) Продолжить без использования файлов");
+
+                    try
+                    {
+                        selFileWork = int.Parse(Console.ReadLine());
+                        if (selFileWork == 0)
+                        {
+                            Console.Clear();
+                        }
+                        else if (selFileWork == 1)
+                        {
+                            FileWorking();
+                        }
+                        else if (selFileWork == 2)
+                        {
+                            CreateMultiArray();
+                        }
+                        sh.ExitTask();
+
+                    }
+                    catch
                     {
                         Console.Clear();
-                        break;
                     }
-                    else if (selFileWork == 1)
-                    {
-                        FileWorking();
-                        break;
-                    }
-                    else if (selFileWork == 2)
-                    {
-                        CreateMultiArray();
-                        break;
-                    }
-
                 }
-                catch
-                {
-                    Console.Clear();
+            }
+            else
+            {
+                while(sh.retryTask){
+                    CreateMultiArray();
+                    sh.ExitTask();
                 }
-            } while (true);
+            }
         }
 
         public static void CreateMultiArray()
@@ -82,9 +94,9 @@
             var indexMin = new int[2];
             arr.OutMultiMinIndex(out indexMin);
             Console.WriteLine($"Минимальное число в массиве - {arr.MultiMin} и его индекс равен [{indexMin[0]},{indexMin[1]}]");
-            if (File.Exists(path) && selFileWork == 1)
+            if (File.Exists($"{path}\\MyMultiArray.txt") && selFileWork == 1)
             {
-                arr.WriteMyMultiArray(path);
+                arr.WriteMyMultiArray($"{path}\\MyMultiArray.txt");
             }
 
         }
@@ -329,16 +341,15 @@
             path = string.Empty;
             do
             {
-                Console.Write(
-                    "Введите путь до текстового файла куда будут сохраняться и загружаться данные из массива: ");
-                path = Console.ReadLine();
+                path = SepoHelper.accountPath;
 
 
-                if (!File.Exists(path))
+                if (!File.Exists($"{path}\\MyMultiArray.txt"))
                 {
                     try
                     {
-                        File.Create(path);
+                        FileStream fs = File.Create($"{path}\\MyMultiArray.txt");
+                        fs.Close();
                         Console.Clear();
                         CreateMultiArray();
                         break;
