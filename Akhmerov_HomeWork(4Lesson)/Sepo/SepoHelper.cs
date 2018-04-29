@@ -12,6 +12,7 @@ namespace Sepo
     public class SepoHelper
     {
         public static string accsPath = Directory.GetCurrentDirectory() + @"\Accounts\";
+        public static string tasksPath = Directory.GetCurrentDirectory() + @"\Tasks\";
         public static string accountPath = "";
         public static bool exit = false;
         public static bool access = false;
@@ -56,6 +57,7 @@ namespace Sepo
                         break;
                 }
             }
+
         }
     }
 }

@@ -12,6 +12,8 @@ namespace Akhmerov_HomeWork_4Lesson
     using Task3;
     using Task_4;
     using Task_5;
+    using Task_6;
+
     class Start
     {
         //static bool exit;
@@ -25,6 +27,7 @@ namespace Akhmerov_HomeWork_4Lesson
                 {
                     case 0:
                         SepoHelper.exit = true;
+                        ExitProg();
                         break;
                     case 1:
                         Task_1.Main();
@@ -40,6 +43,9 @@ namespace Akhmerov_HomeWork_4Lesson
                         break;
                     case 5:
                         Doubler.Main();
+                        break;
+                    case 6:
+                        TrueOrNotTrue.Main();
                         break;
                 }
             }
